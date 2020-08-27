@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "di-decorator"
+    }
+  },
+  "defaultProject": "di-decorator",
+  "cli": {
+    "analytics": "0aae1f1a-2d28-4082-b35b-135d6c977efd"
+  }
 }
