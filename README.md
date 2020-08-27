@@ -1,27 +1,49 @@
-# DiDecorator
+# Automatic Service Resolution
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.7.
+## @Rule Decorator
 
-## Development server
+Specify which service should be used to do persistence for the respective model.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```ts
+// customer.model.ts
+@Rule({
+  persistence: {
+    dataProvider: CustomerDataProvider,
+  },
+})
+export class Customer {}
+```
 
-## Code scaffolding
+## Service
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Write an ordinary Angular service.
 
-## Build
+```ts
+// customer-data-provider.service.ts
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+@Injectable({ providedIn: "root" })
+export class CustomerDataProvider {
+  save(model: Customer): void {
+    console.log("Save", model);
+  }
+}
+```
 
-## Running unit tests
+## Usage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Inject the general `ModelDataProvider` into your component and work with the
+model.
 
-## Running end-to-end tests
+`ModelDataProvider` will automatically use the correct service in order to
+do CRUD operations with your model.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```ts
+// app.component.ts
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+export class AppComponent {
+  constructor(private modelDataProvider: ModelDataProvider) {
+    const customer = new Customer();
+    this.modelDataProvider.save(customer);
+  }
+}
+```
