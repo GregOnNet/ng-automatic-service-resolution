@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Customer } from './customer.model';
-import { ModelDataProvider } from './model-data-provider.service';
+import { DataProvider } from './model-data-provider.service';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +10,8 @@ import { ModelDataProvider } from './model-data-provider.service';
 export class AppComponent {
   title = 'di-decorator';
 
-  constructor(private modelDataProvider: ModelDataProvider) {
+  constructor(private dataProvider: DataProvider) {
     const customer = new Customer();
-    this.modelDataProvider.save(customer);
+    this.dataProvider.save(customer);
   }
 }

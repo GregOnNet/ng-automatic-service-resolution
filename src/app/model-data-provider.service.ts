@@ -1,22 +1,31 @@
 import { Injectable, Injector } from '@angular/core';
 import { RuleTarget } from './rule.decorator';
 
-export interface DataProvider<T> {
+export interface ModelDataProvider<T> {
   save(model: T): void;
 }
 
 @Injectable({ providedIn: 'root' })
-export class ModelDataProvider {
+export class DataProvider {
   constructor(private injector: Injector) {}
 
-  save<T>(model: T): void {
+  save<TModel>(model: TModel): void {
+    const dataProvider = this.resolveDataProvider(model);
+    dataProvider.save(model);
+  }
+
+  private resolveDataProvider<TModel>(
+    model: TModel
+  ): ModelDataProvider<TModel> {
     const dataProviderToken = ((model as unknown) as RuleTarget).µµrule
       ?.persistence.dataProvider;
 
-    const dataProvider = this.injector.get(dataProviderToken) as DataProvider<
-      T
-    >;
+    if (!dataProviderToken) {
+      throw new Error(
+        '[DataProvider]: Sorry, cannot resolve data provider for given'
+      );
+    }
 
-    dataProvider.save(model);
+    return this.injector.get(dataProviderToken) as ModelDataProvider<TModel>;
   }
 }
