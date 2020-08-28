@@ -6,6 +6,7 @@ Specify which service should be used to do persistence for the respective model.
 
 ```ts
 // customer.model.ts
+
 @Rule({
   persistence: {
     dataProvider: CustomerDataProvider,
