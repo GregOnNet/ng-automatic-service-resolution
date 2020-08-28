@@ -42,7 +42,7 @@ do CRUD operations with your model.
 // app.component.ts
 
 export class AppComponent {
-  constructor(private modelDataProvider: ModelDataProvider) {
+  constructor(private dataProvider: DataProvider) {
     const customer = new Customer();
     this.modelDataProvider.save(customer);
   }
